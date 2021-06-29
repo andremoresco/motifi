@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 
 import { publicPath } from './utils/path';
-import { mongoConnect } from './configs/database';
+import DatabaseConnection from './configs/database';
 import { CustomError } from './interfaces/errors';
 import BudgetController from './controllers/BudgetController';
 
@@ -32,18 +32,23 @@ app.use((err: CustomError, req: Request, res: Response) => {
   res.status(code).json({ status: 'error', message, data });
 });
 
-console.log(port);
 app.listen(port);
 
-// (async () => {
-//   const { status, message } = await mongoConnect();
+(async () => {
 
-//   if (status === 'success') {
+  try {
     
+    const { status, message } = await new DatabaseConnection().connect();;
 
-//     console.log(message);
-//   } else {
-//     console.log(message);
-//     process.exit(1);
-//   }
-// })();
+    if (status === 'success') {
+  
+      console.log(message);
+    } else {
+      console.log(message);
+      process.exit(1);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  
+})();

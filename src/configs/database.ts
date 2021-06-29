@@ -1,24 +1,41 @@
-import { connect } from 'mongoose';
+import mongoose from 'mongoose';
 import { ConnectionResponse } from '../interfaces/database';
 
-const MONGO_HOST = process.env.MONGO_HOST;
-const MONGO_PORT = process.env.MONGO_PORT;
-const MONGO_USERNAME = process.env.MONGO_USERNAME;
-const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
-const MONGO_DATABASE = process.env.MONGO_DATABASE;
+class DatabaseConnection {
 
-let mongodbUri: string;
+  private mongoHost = process.env.MONGO_HOST;
+  private mongoPort = process.env.MONGO_PORT;
+  private mongoUsername = process.env.MONGO_USERNAME;
+  private mongoPassword = process.env.MONGO_PASSWORD;
+  private mongoDatabase = process.env.MONGO_DATABASE;
 
-if (process.env.MONGO_PROVIDER === 'atlas') {
-  mongodbUri = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}?retryWrites=true&w=majority`;
-} else {
-  mongodbUri = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`;
+  constructor () {
+
+  }
+
+  connect = async () => {
+
+    let mongodbUri: string;
+
+    if (process.env.MONGO_PROVIDER === 'atlas') {
+      console.log("connecting on mongo using:");
+      console.log("Host: " + this.mongoHost);
+      console.log("Database: "+ this.mongoDatabase);
+      console.log("Username: " + this.mongoUsername);
+      console.log("Password: "+ this.mongoPassword);
+      mongodbUri = `mongodb+srv://${this.mongoUsername}:${this.mongoPassword}@${this.mongoHost}/${this.mongoDatabase}?retryWrites=true&w=majority`;
+    } else {
+      mongodbUri = `mongodb://${this.mongoUsername}:${this.mongoPassword}@${this.mongoHost}:${this.mongoPort}/${this.mongoDatabase}`;
+    }
+
+    return await mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+      .then(() => {
+        return {status: "success", message: "Mongoose connected!"};
+      })
+      .catch((err) => {
+        return {status: "error", message: err.message }
+      }) 
+  }
 }
 
-export const mongoConnect = (): Promise<ConnectionResponse> => {
-  return new Promise((resolve, reject) => {
-    connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-      .then(() => resolve({ status: 'success', message: 'MONGO CONNECTED!' }))
-      .catch((err) => reject({ status: 'error', message: err.message }));
-  });
-};
+export default DatabaseConnection;
