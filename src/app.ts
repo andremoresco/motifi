@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { ConnectionResponse } from './interfaces/database';
 
 import { publicPath } from './utils/path';
 import DatabaseConnection from './configs/database';
@@ -35,20 +36,13 @@ app.use((err: CustomError, req: Request, res: Response) => {
 app.listen(port);
 
 (async () => {
-
-  try {
     
-    const { status, message } = await new DatabaseConnection().connect();;
-
-    if (status === 'success') {
+  let response: ConnectionResponse = await new DatabaseConnection().connect();
   
-      console.log(message);
-    } else {
-      console.log(message);
-      process.exit(1);
-    }
-  } catch (err) {
-    console.log(err);
+  if (response.status === 'success') {
+    console.log(response.message);
+  } else {
+    console.log(response.message);
   }
-  
+
 })();

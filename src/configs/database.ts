@@ -13,7 +13,7 @@ class DatabaseConnection {
 
   }
 
-  connect = async () => {
+  connect = async (): Promise<ConnectionResponse> => {
 
     let mongodbUri: string;
 
@@ -27,13 +27,14 @@ class DatabaseConnection {
     } else {
       mongodbUri = `mongodb://${this.mongoUsername}:${this.mongoPassword}@${this.mongoHost}:${this.mongoPort}/${this.mongoDatabase}`;
     }
+    console.log(mongodbUri);
 
-    return await mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+    return mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true })
       .then(() => {
-        return {status: "success", message: "Mongoose connected!"};
+        return {status: 'success', message: 'Mongoose connected!'};
       })
       .catch((err) => {
-        return {status: "error", message: err.message }
+        return {status: 'error', message: "Connection database failed " + err.message }
       }) 
   }
 }
