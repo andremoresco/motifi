@@ -1,33 +1,20 @@
-import * as express from 'express';
-import { Budget } from '../models/budget';
+import {Request, Response } from 'express';
+import BudgetService from '../services/BudgetService'
+import Controller from './Controller';
 
-class BudgetController {
 
-    private path:string = '/budget'
-    public router = express.Router();
-
-    private budgets: Budget[] = [
-        {
-            name: 'Canada Trip',
-            value: 10000.00
-        },
-        {
-            name: 'London trip',
-            value: 15000.00
-        }
-
-    ]
-
+class BudgetController extends Controller {
+    
     constructor() {
-        this.initializeRoutes();
+        super('/budgets')
     }
 
-    private initializeRoutes() {
+    protected initRoutes(): void {
         this.router.get(this.path, this.getAllBudgets);
     }
 
-    getAllBudgets = (request: express.Request, response: express.Response) => {
-        response.send(this.budgets)
+    public getAllBudgets(req: Request, res: Response): void {
+        res.send({status: "ok"});
     }
 
 }

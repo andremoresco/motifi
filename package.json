@@ -2,16 +2,17 @@
   "name": "nodets-starter",
   "version": "1.0.0",
   "description": "Node starter written in TypeScript",
-  "main": "app.js",
+  "main": "server.ts",
   "scripts": {
     "serve": "webpack --watch --node-env development",
     "build": "webpack --node-env production",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
-  "author": "Peter Kitonga",
+  "author": "Andre Mendes",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
     "@types/jsonwebtoken": "^8.5.2",
     "@types/mongoose": "^5.11.97",
@@ -32,6 +33,7 @@
   "dependencies": {
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.6.0",
     "dotenv-expand": "^5.1.0",
     "express": "^4.17.1",

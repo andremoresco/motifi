@@ -1,48 +1,54 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { ConnectionResponse } from './interfaces/database';
-
-import { publicPath } from './utils/path';
+import cors from 'cors';
 import DatabaseConnection from './configs/database';
-import { CustomError } from './interfaces/errors';
-import BudgetController from './controllers/BudgetController';
+import Controller from './controllers/Controller';
 
-const app = express();
-const port = process.env.APP_PORT;
+class App {
 
-app.use(express.json());
-app.use(express.static(publicPath()));
+  public app: express.Application;
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  constructor(controllers: Controller[]) {
+    this.app = express();
 
-  next();
-});
+    this.initControllers(controllers);
+    this.configExpress();
+    this.configCors();
+    this.connectDatabase();
 
-app.use('/', new BudgetController().router);
-
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ message: `Hello There! Running at: ${process.env.APP_BASE_URL}` });
-});
-
-app.use((err: CustomError, req: Request, res: Response) => {
-  const { status_code, message, data } = err;
-  const code = status_code || 500;
-
-  res.status(code).json({ status: 'error', message, data });
-});
-
-app.listen(port);
-
-(async () => {
-    
-  let response: ConnectionResponse = await new DatabaseConnection().connect();
-  
-  if (response.status === 'success') {
-    console.log(response.message);
-  } else {
-    console.log(response.message);
   }
 
-})();
+  public listen(port: number): void {
+    console.log("Server listening on port: " + port);
+    this.app.listen(port);
+  }
+
+  private initControllers(controllers: Controller[]): void {
+    controllers.forEach((controller) => {
+      this.app.use('/', controller.router);
+    })
+  }
+
+  private configExpress(): void {
+    this.app.use(express.json());
+  }
+
+  private configCors():void {
+    this.app.use(cors());
+  }
+
+  private connectDatabase(): void {
+    new DatabaseConnection().connect()
+      .then((response) => {
+        if (response.status === 'success') {
+          console.log(response.message);
+        } else {
+          console.log(response.message);
+        }
+      });
+  }
+
+
+}
+
+export default App;
