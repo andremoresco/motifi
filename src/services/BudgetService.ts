@@ -1,4 +1,4 @@
-import { Budget } from '../models/budget';
+import Budget, { BudgetInterface } from '../models/budget';
 
 class BudgetService {
 
@@ -6,20 +6,12 @@ class BudgetService {
 
     }
 
-    private budgets: Budget[] = [
-        {
-            name: 'Canada Trip',
-            value: 10000.00
-        },
-        {
-            name: 'London trip',
-            value: 15000.00
-        }
+    public async list(): Promise<BudgetInterface[]> {
+        return await Budget.find();
+    }
 
-    ]
-
-    public getAllBudgets(userId: Number): void {
-
+    public async create(budget: BudgetInterface): Promise<BudgetInterface> {
+        return await Budget.create(budget);
     }
 
 }

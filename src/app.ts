@@ -1,5 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { ConnectionResponse } from './interfaces/database';
+import express from 'express';
 import cors from 'cors';
 import DatabaseConnection from './configs/database';
 import Controller from './controllers/Controller';

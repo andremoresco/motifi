@@ -1,11 +1,11 @@
 import { Schema, model, Document } from 'mongoose'
 
-export interface Budget {
+export interface BudgetInterface {
     value: Number;
     name: string;
-}
+};
 
-const schema = new Schema<Budget> (
+const BudgetSchema = new Schema(
     {
         value: {type: Number, required: true },
         name: { type: String, required: true }
@@ -15,4 +15,4 @@ const schema = new Schema<Budget> (
     }
 );
 
-export default model<Budget>('Budget', schema);
+export default model<BudgetInterface>('Budget', BudgetSchema);
