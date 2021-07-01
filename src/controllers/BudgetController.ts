@@ -1,35 +1,32 @@
-import * as express from 'express';
-import { Budget } from '../models/budget';
+import {Request, Response } from 'express';
+import BudgetService from '../services/BudgetService'
+import Controller from './Controller';
+import { json } from 'body-parser'
 
-class BudgetController {
-
-    private path:string = '/budget'
-    public router = express.Router();
-
-    private budgets: Budget[] = [
-        {
-            name: 'Canada Trip',
-            value: 10000.00
-        },
-        {
-            name: 'London trip',
-            value: 15000.00
-        }
-
-    ]
-
+class BudgetController extends Controller {
+    
     constructor() {
-        this.initializeRoutes();
+        super('/budgets');
     }
 
-    private initializeRoutes() {
-        this.router.get(this.path, this.getAllBudgets);
+    protected initRoutes(): void {
+        this.router.get(this.path, this.list);
+        this.router.post(this.path, json(), this.create);
     }
 
-    getAllBudgets = (request: express.Request, response: express.Response) => {
-        response.send(this.budgets)
+    public async list(req: Request, res: Response): Promise<void> {
+        res.send(await new BudgetService().list());
     }
 
+    public async create(req: Request, res: Response): Promise<void> {
+        try {
+            let newBudget = await new BudgetService().create(req.body);
+            res.send(newBudget);
+        } catch(err) {
+            res.status(500).send({status: "error", message: err.message});
+
+        }
+    }
 }
 
 export default BudgetController;

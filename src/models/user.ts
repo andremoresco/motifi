@@ -6,8 +6,8 @@ export interface User {
   password: string;
 }
 
-const schema = new Schema<User>(
-  {
+const schema = new Schema(
+  {    
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true }

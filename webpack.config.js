@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   mode: process.env.NODE_ENV,
-  entry: './src/app.ts',
+  entry: './src/server.ts',
   /**
    * Let's webpack know which environment to target
    *
