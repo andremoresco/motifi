@@ -1,5 +1,5 @@
-import { User } from "../../entities/User";
-import { IUserRepository } from "../../repository/IUserRepository";
+import { User } from "../../../entities/User";
+import { IUserRepository } from "../../../repository/IUserRepository";
 
 export class ListUserUseCase {
 

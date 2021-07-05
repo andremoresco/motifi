@@ -1,6 +1,6 @@
-import { User } from "../../entities/User";
-import { IIdentityProvider, IIdentityUser } from "../../providers/IIdentityProvider";
-import { IUserRepository } from "../../repository/IUserRepository";
+import { User } from "../../../entities/User";
+import { IIdentityProvider, IIdentityUser } from "../../../providers/IIdentityProvider";
+import { IUserRepository } from "../../../repository/IUserRepository";
 import { ICreateUserDTO } from "./ICreateUserDTO";
 
 

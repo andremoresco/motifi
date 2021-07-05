@@ -1,6 +1,6 @@
 import { User } from "../../entities/User";
 import { IUserRepository } from "../IUserRepository";
-import MongoUserModel, { MongoUserInterface } from './mongoModels/MongoUserModel';
+import MongoUserModel, { MongoUserInterface } from './mongoModels/UserModelMongo';
 
 export class MongoUserRepository implements IUserRepository {
     
