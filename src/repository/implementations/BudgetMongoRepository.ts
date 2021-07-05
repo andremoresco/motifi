@@ -12,4 +12,14 @@ export class BudgetMongoRepository implements IBudgetsRepository {
         }
     }
 
+    async create(budget: Budget): Promise<void> {
+        try {
+
+            await BudgetModelMongo.create(budget);
+
+        } catch (err) {
+            throw new Error("Error creating budget. " + err.message);
+        }
+    }
+
 }
