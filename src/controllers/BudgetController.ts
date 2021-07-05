@@ -1,10 +1,10 @@
-import {Request, Response } from 'express';
+import { Request, Response } from 'express';
 import BudgetService from '../services/BudgetService'
 import Controller from './Controller';
 import { json } from 'body-parser'
 
 class BudgetController extends Controller {
-    
+
     constructor() {
         super('/budgets');
     }
