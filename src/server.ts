@@ -1,8 +1,10 @@
 import App from './app'
 import BudgetController from './controllers/BudgetController';
+import UsersController from './controllers/UsersController';
 
 const app = new App([
-    new BudgetController()
+    new BudgetController(),
+    new UsersController()
 
 ]);
 

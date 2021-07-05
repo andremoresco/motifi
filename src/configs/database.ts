@@ -13,24 +13,25 @@ class DatabaseConnection {
 
   }
 
-  connect = async (): Promise<ConnectionResponse> => {
+  public async connect(): Promise<ConnectionResponse> {
 
     let mongodbUri: string;
 
     if (process.env.MONGO_PROVIDER === 'atlas') {
-      console.log("connecting on mongo using:");
-      console.log("Host: " + this.mongoHost);
-      console.log("Database: "+ this.mongoDatabase);
-      console.log("Username: " + this.mongoUsername);
-      console.log("Password: "+ this.mongoPassword);
       mongodbUri = `mongodb+srv://${this.mongoUsername}:${this.mongoPassword}@${this.mongoHost}/${this.mongoDatabase}?retryWrites=true&w=majority`;
     } else {
       mongodbUri = `mongodb://${this.mongoUsername}:${this.mongoPassword}@${this.mongoHost}:${this.mongoPort}/${this.mongoDatabase}`;
     }
-    console.log(mongodbUri);
 
-    return mongoose.connect(mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true })
-      .then(() => {
+    mongoose.set('useCreateIndex', true);
+
+    return mongoose.connect(mongodbUri, { 
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      autoIndex: true,
+      useCreateIndex: true,
+      useFindAndModify: false
+    }).then(() => {
         return {status: 'success', message: 'Mongoose connected!'};
       })
       .catch((err) => {
