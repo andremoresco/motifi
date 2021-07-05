@@ -1,5 +1,5 @@
-import { Auth0IdentityServerProvider } from "../../providers/implementations/Auth0IdentityServerProvider";
-import { MongoUserRepository } from "../../repository/implementations/MongoUserRepository";
+import { Auth0IdentityServerProvider } from "../../../providers/implementations/Auth0IdentityServerProvider";
+import { MongoUserRepository } from "../../../repository/implementations/UserMongoRepository";
 import { CreateUserController } from "./CreateUserController";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
