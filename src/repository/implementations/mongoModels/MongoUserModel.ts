@@ -1,13 +1,18 @@
 import { Schema, model, Document } from 'mongoose';
 
-export interface UserInterface extends Document {
-  name: String;
-  email: String;
+export interface MongoUserInterface extends Document {
+  identityId: string,
+  name: string;
+  email: string;
   password: string;
 }
 
 const schema = new Schema(
   {    
+    identityId: {
+      type: String,
+      required: true
+    },
     name: { 
       type: String, 
       required: true 
@@ -29,4 +34,4 @@ const schema = new Schema(
   },
 );
 
-export default model<UserInterface>('User', schema);
+export default model<MongoUserInterface>('MongoUserModel', schema);
