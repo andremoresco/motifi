@@ -34,4 +34,4 @@ const schema = new Schema(
   },
 );
 
-export default model<MongoUserInterface>('MongoUserModel', schema);
+export default model<MongoUserInterface>('User', schema);
