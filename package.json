@@ -7,7 +7,8 @@
     "serve": "webpack --watch --node-env development",
     "build": "webpack --node-env production",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint src/**/*.ts --fix"
+    "format": "eslint src/**/*.ts --fix",
+    "start": "webpack --watch --node-env development"
   },
   "author": "Andre Mendes",
   "license": "ISC",
