@@ -1,9 +1,9 @@
 enum BudgetInstallmentStatus {
 
-  PENDING,
-  SAVED,
-  PARCIAL_SAVED,
-  NOT_SAVED
+  PENDING = "PENDING",
+  SAVED = "SAVED",
+  PARCIAL_SAVED = "PARCIAL_SAVED",
+  NOT_SAVED = "NOT_SAVED"
 
 }
 

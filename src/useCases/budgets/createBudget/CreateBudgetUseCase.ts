@@ -2,24 +2,25 @@ import { BudgetInstallment } from "../../../entities/BudgetInstallment";
 import { IBudgetsRepository } from "../../../repository/IBudgetsRepository";
 import { CreateBudgetDTO } from "./CreateBudgetDTO";
 import moment from 'moment';
+import { BudgetInstallmentStatus } from "../../../utils/BudgetInstallmentStatus";
 
 export class CreateBudgetUseCase {
 
     constructor(
         private budgetRepository: IBudgetsRepository
-    ) {}
+    ) { }
 
     async execute(budget: CreateBudgetDTO): Promise<void> {
 
         const installments: BudgetInstallment[] = this.createInstallments(budget);
 
-        // await this.budgetRepository.create({
-        //     description: budget.description,
-        //     value: budget.value,
-        //     userIdentityId: budget.userId,
-        //     finalDate: budget.finalDate,
-        //     installments: installments
-        // });
+        await this.budgetRepository.create({
+            description: budget.description,
+            value: budget.value,
+            userIdentityId: budget.userId,
+            finalDate: budget.finalDate,
+            installments: installments
+        });
 
     }
 
@@ -28,11 +29,30 @@ export class CreateBudgetUseCase {
 
         const difference = this.getMonthDifferenceBetween(budget.startDate, budget.finalDate);
 
-        // Implement for to create installments using the difference between start date and final date months
+        let installments: BudgetInstallment[] = [];
+
+        let month: number = moment(budget.startDate).month();
+        let valuePerMonth: number = budget.value / difference;
+
+        for (let i = 0; i < difference; i++) {
+
+            if (month > 11) {
+                month = 0
+            }
+
+            let installment: BudgetInstallment = new BudgetInstallment({
+                index: i + 1,
+                month: month++,
+                value: valuePerMonth,
+                status: BudgetInstallmentStatus.PENDING
+            })
+            installments.push(installment);
+        }
 
         console.log(difference)
+        console.log(installments);
 
-        return null;
+        return installments;
     }
 
     private verifyCompatiblePeriod(startDate: Date, finalDate: Date): void {
@@ -48,4 +68,5 @@ export class CreateBudgetUseCase {
         return secondMoment.diff(firsMoment, 'month');
     }
 
+    
 }
